@@ -1,0 +1,65 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: tr7zw <tr7zw@live.de>
+Date: Thu, 25 Jun 2020 23:40:12 +0200
+Subject: [PATCH] Heavily optimize furnance fuel and recipe lookups
+
+Co-authored-by: Mykyta Komarn <nkomarn@hotmail.com>
+
+diff --git a/src/main/java/net/minecraft/server/TileEntityFurnace.java b/src/main/java/net/minecraft/server/TileEntityFurnace.java
+index 1d3c2dd93657fb5dc71ee6b444c585b54619d1e8..77ea56c5a25fe09a1721429d42965ad34d905870 100644
+--- a/src/main/java/net/minecraft/server/TileEntityFurnace.java
++++ b/src/main/java/net/minecraft/server/TileEntityFurnace.java
+@@ -83,7 +83,14 @@ public abstract class TileEntityFurnace extends TileEntityContainer implements I
+         this.c = recipes;
+     }
+ 
++    private static Object2IntOpenHashMap<Item> cachedFuelMap = null; // Yatopia
++
+     public static Map<Item, Integer> f() {
++        // Yatopia start
++	    if(cachedFuelMap != null) {
++		    return cachedFuelMap;
++	    }
++	    // Yatopia end
+         Map<Item, Integer> map = Maps.newLinkedHashMap();
+ 
+         a(map, (IMaterial) Items.LAVA_BUCKET, 20000);
+@@ -146,6 +153,7 @@ public abstract class TileEntityFurnace extends TileEntityContainer implements I
+         a(map, (IMaterial) Blocks.FLETCHING_TABLE, 300);
+         a(map, (IMaterial) Blocks.SMITHING_TABLE, 300);
+         a(map, (IMaterial) Blocks.COMPOSTER, 300);
++        cachedFuelMap = new Object2IntOpenHashMap<>(map); // Yatopia
+         return map;
+     }
+ 
+@@ -271,7 +279,10 @@ public abstract class TileEntityFurnace extends TileEntityContainer implements I
+                     this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.cookTimeTotal);
+                 }
+             } else {
+-                IRecipe irecipe = this.world.getCraftingManager().craft((Recipes<RecipeCooking>) this.c, this, this.world).orElse(null); // Eclipse fail
++                // Yatopia start - used cached recipe if possible, otherwise look up
++                IRecipe irecipe = getCurrentRecipe();
++                if (irecipe == null) irecipe = this.world.getCraftingManager().craft((Recipes<RecipeCooking>) this.c, this, this.world).orElse(null); // Eclipse fail
++                // Yatopia end
+ 
+                 if (!this.isBurning() && this.canBurn(irecipe)) {
+                     // CraftBukkit start
+@@ -597,4 +608,18 @@ public abstract class TileEntityFurnace extends TileEntityContainer implements I
+         }
+ 
+     }
++
++    // Yatopia start - cache recipe
++    private IRecipe cachedRecipe = null;
++
++    @Override
++    public IRecipe getCurrentRecipe() {
++        return cachedRecipe;
++    }
++
++    @Override
++    public void setCurrentRecipe(IRecipe recipe) {
++        cachedRecipe = recipe;
++    }
++    // Yatopia end
+ }

@@ -12,7 +12,9 @@ This is an overview over all patches that are currently used.
 | api |  Add ChatColor.getById      | Aikar |  |
 | api |  Add GameProfileLookupEvent      | tr7zw |  |
 | server |  Add GameProfileLookupEvent      | tr7zw |  |
+| server |  Add GlueList      | Mykyta Komarn |  |
 | server |  Add IntelliJ IDEA runnable      | Bud Gidiere |  |
+| server |  Add JsonList save timings      | Ivan Pekov |  |
 | api |  Add NBT API as a first-class lib      | tr7zw |  |
 | server |  Add NBT API as a first-class lib      | tr7zw |  |
 | api |  Add StructureLocateEvent      | dfsek |  |
@@ -27,20 +29,15 @@ This is an overview over all patches that are currently used.
 | server |  Add permission for F3+N debug      | William Blake Galbreath |  |
 | server |  Add timings for Behavior      | Phoenix616 |  |
 | server |  Add timings for Pathfinder      | MrIvanPlays |  |
-| server |  Akarin Updated Save json list async      | tsao chi |  |
 | server |  Allow anvil colors      | William Blake Galbreath |  |
 | api |  Allow inventory resizing      | William Blake Galbreath |  |
 | server |  Allow leashing villagers      | William Blake Galbreath |  |
 | server |  Allow soil to moisten from water directly under it      | William Blake Galbreath |  |
 | server |  Allow to change the piston push limit      | tr7zw |  |
 | server |  Alternative Keepalive Handling      | William Blake Galbreath |  |
-| server |  Apply advancements async      | Mariell Hoversholm |  |
 | server |  Avoid double I/O operation on load player file      | ㄗㄠˋ ㄑㄧˊ |  |
 | server |  Barrels and enderchests 6 rows      | William Blake Galbreath |  |
 | server |  Brandings      | tr7zw |  |
-| server |  Breedable Polar Bears      | William Blake Galbreath |  |
-| server |  Charged creeper naturally spawn      | William Blake Galbreath |  |
-| server |  Configurable TPS Catchup      | William Blake Galbreath |  |
 | server |  Configurable flight checks      | epserv |  |
 | server |  Configurable villager brain ticks      | William Blake Galbreath |  |
 | server |  Cows eat mushrooms      | William Blake Galbreath |  |
@@ -51,6 +48,7 @@ This is an overview over all patches that are currently used.
 | server |  Don&#39;t trigger Lootable Refresh for non player interaction      | Aikar |  |
 | server |  Don&#39;t wake up entities when damage event is cancelled      | Phoenix616 |  |
 | server |  Dont send useless entity packets      | William Blake Galbreath |  |
+| server |  Ensure pools create daemon threads      | Ivan Pekov |  |
 | server |  Entity lifespan      | William Blake Galbreath |  |
 | server |  Fix &quot;Unable to save chunk&quot; error      | Ivan Pekov |  |
 | server |  Fix &#39;outdated server&#39; showing in ping before server fully      | William Blake Galbreath |  |
@@ -60,24 +58,17 @@ This is an overview over all patches that are currently used.
 | server |  Fix exp drop of zombie pigmen (MC-56653)      | Phoenix616 |  |
 | server |  Fix lead fall dmg config      | tr7zw |  |
 | server |  Fix merging spawning values      | Mariell Hoversholm |  |
-| server |  Fix recipe crash      | Ivan Pekov |  |
 | server |  Fix the dead lagging the server      | William Blake Galbreath |  |
-| server |  Fix villager dupe      | Ivan Pekov |  |
-| server |  Fix watchdog termination hanging indefinitely      | Ivan Pekov |  |
-| server |  Giants AI settings      | William Blake Galbreath |  |
 | server |  Global Eula file      | tr7zw |  |
-| server |  Heavily optimize furnance fuel and recipe lookups      | tr7zw |  |
+| server |  Heavily optimize furnance fuel and recipe lookups      | tr7zw | Mykyta Komarn |
+| server |  Heavily optimize recipe lookups in CraftingManager      | Mykyta Komarn | Ivan Pekov |
 | server |  Highly optimize VillagePlace filtering      | Ivan Pekov |  |
-| server |  Illusioners AI settings      | William Blake Galbreath |  |
-| server |  Implement bed explosion options      | William Blake Galbreath |  |
-| server |  Implement respawn anchor explosion options      | William Blake Galbreath |  |
-| server |  Improve Hopper Performance      | Aikar |  |
+| server |  Hopper Optimizations      | Phoenix616 |  |
+| server |  Improve task performance      | ishland | Mykyta Komarn |
 | server |  Item stuck sleep config      | tr7zw |  |
 | api |  Kill AnnotationTest      | tr7zw |  |
 | server |  Lagging threshold      | William Blake Galbreath |  |
-| server |  Load also the chunk that you&#39;re teleporting to      | Ivan Pekov |  |
 | server |  MC-168772 Fix - Add turtle egg block options      | William Blake Galbreath |  |
-| server |  MC-171420 - Fix deop kicking non-whitelisted player when      | William Blake Galbreath |  |
 | server |  MC-4 Fix - Item position desync      | William Blake Galbreath |  |
 | api |  Modify POM      | tr7zw |  |
 | server |  Modify POM      | tr7zw |  |
@@ -87,29 +78,25 @@ This is an overview over all patches that are currently used.
 | server |  Optimize BehaviorController      | MrIvanPlays |  |
 | server |  Optimize TileEntity load/unload      | tr7zw |  |
 | server |  Optimize Villagers      | Ivan Pekov |  |
+| server |  Optimize advancement loading      | Ivan Pekov |  |
 | server |  Optimize inventory API item handling      | Phoenix616 |  |
 | server |  Optimize player loops around weather      | MrIvanPlays |  |
 | server |  Optimize whitelist command for multiple additions / removals      | Ivan Pekov |  |
 | server |  Option for simpler Villagers      | tr7zw |  |
 | server |  Option to toggle milk curing bad omen      | William Blake Galbreath |  |
 | server |  Origami Server Config      | Phoenix616 |  |
+| server |  PaperPR - Add hex color code support for console logging      | Esophose |  |
 | server |  Per entity (type) collision settings      | MrIvanPlays | tr7zw |
-| server |  Phantoms attracted to crystals and crystals shoot phantoms      | William Blake Galbreath |  |
-| server |  Player-saving-async-FileIO      | tr7zw |  |
+| server |  Persistent TileEntity Lore and DisplayName      | jmp |  |
 | api |  PlayerAttackEntityEvent      | Ivan Pekov |  |
 | server |  PlayerAttackEntityEvent      | Ivan Pekov |  |
 | api |  ProxyForwardDataEvent      | Ivan Pekov |  |
 | server |  ProxyForwardDataEvent      | Ivan Pekov |  |
 | server |  Purpur config files      | William Blake Galbreath |  |
-| server |  Rabbit naturally spawn toast and killer      | William Blake Galbreath |  |
 | server |  Redirect Configs      | tr7zw |  |
-| server |  Redstone deactivates spawners      | draycia |  |
-| api |  Remove Streams using IntelliJ IDEA      | ㄗㄠˋ ㄑㄧˊ |  |
-| server |  Remove Streams using IntelliJ IDEA      | ㄗㄠˋ ㄑㄧˊ |  |
-| server |  Remove a few more streams      | Sotr |  |
 | server |  Remove some streams and object allocations      | Phoenix616 |  |
-| server |  Remove stream for ender teleport      | Sotr |  |
 | server |  Remove vanilla profiler callers      | Sotr |  |
+| server |  Replace some hot streams      | Ivan Pekov |  |
 | server |  Respect PlayerKickEvent leaveMessage      | Ivan Pekov |  |
 | server |  Respect rotation when respawning      | Ivan Pekov |  |
 | server |  Send more packets immediately      | MrIvanPlays |  |
@@ -121,15 +108,15 @@ This is an overview over all patches that are currently used.
 | server |  Stop wasting resources on JsonList#get      | Ivan Pekov |  |
 | server |  Swaps the predicate order of collision      | ㄗㄠˋ ㄑㄧˊ |  |
 | server |  Timings stuff      | William Blake Galbreath |  |
-| server |  Tulips change fox type      | William Blake Galbreath |  |
+| server |  Use Glue List as delegate for NonNullList      | Mykyta Komarn |  |
+| server |  Use Glue List in WeightedList      | Ivan Pekov |  |
+| server |  Use GlueList for some list initialisations in packets      | Ivan Pekov |  |
 | server |  Use block distance in portal search radius      | Patrick Hemmer |  |
 | server |  Use faster block collision check for entity suffocation check      | Mykyta Komarn |  |
 | server |  Use offline uuids if we need to      | Ivan Pekov |  |
-| server |  Villagers follow emerald blocks      | William Blake Galbreath |  |
 | api |  Yatopia API Bundle      | Bud Gidiere |  |
 | server |  Yatopia configuration      | tr7zw |  |
 | server |  Yatopia-Server-Fixes      | Bud Gidiere |  |
-| server |  Zombie horse naturally spawn      | William Blake Galbreath |  |
 | server |  dont load chunks for physics      | Aikar |  |
 | server |  lithium MixinBiome      | JellySquid |  |
 | server |  lithium MixinBox      | JellySquid |  |
@@ -137,12 +124,8 @@ This is an overview over all patches that are currently used.
 | server |  lithium MixinDirection      | JellySquid |  |
 | server |  lithium MixinGoalSelector      | JellySquid |  |
 | server |  lithium MixinLandPathNodeMaker      | JellySquid |  |
-| server |  lithium NoiseChunkGeneratorMixin      | SuperCoder79 |  |
-| server |  lithium PerlinNoiseSamplerMixin      | JellySquid |  |
-| server |  lithium VoronoiBiomeAccessTypeMixin      | JellySquid |  |
 | server |  lithium VoxelShapesMixin      | JellySquid | Ivan Pekov |
 | server |  lithium collision optimizations      | JellySquid | Ivan Pekov |
 | server |  lithium enum_values      | JellySquid |  |
 | server |  lithium-MixinChunkGeneratorAbstract      | JellySquid | tr7zw |
 | server |  lithium-MixinDataWatcher      | JellySquid | tr7zw |
-| server |  tic-tacs Threading Fix      | gegy1000 |  |

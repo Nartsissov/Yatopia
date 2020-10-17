@@ -10,7 +10,7 @@ Co-authored-by: Ivan Pekov <ivan@mrivanplays.com>
 
 diff --git a/src/main/java/me/jellysquid/mods/lithium/common/entity/EntityClassGroup.java b/src/main/java/me/jellysquid/mods/lithium/common/entity/EntityClassGroup.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..b400a5870b64b9eb92b6a8311793f5c8ea8df9af
+index 0000000000000000000000000000000000000000..91608928dc5cd2f600f1ce57ef7931078f354ea6
 --- /dev/null
 +++ b/src/main/java/me/jellysquid/mods/lithium/common/entity/EntityClassGroup.java
 @@ -0,0 +1,101 @@
@@ -34,7 +34,7 @@ index 0000000000000000000000000000000000000000..b400a5870b64b9eb92b6a8311793f5c8
 +    //Keep a set of classes that were already added to matching class groups, so we only analyse them once.
 +    private static final Map<Class<?>, Object> knownEntityClasses = new ConcurrentHashMap<>(); //value unused, no set variant available
 +    //Keep track of available class groups for updating them in case an entity class is instantiated for the first time
-+    private static final List<EntityClassGroup> entityClassGroups = new ArrayList<>();
++    private static final List<EntityClassGroup> entityClassGroups = new net.yatopia.server.list.GlueList<>(); // Yatopia - GlueList
 +
 +    public static final EntityClassGroup COLLISION_BOX_OVERRIDE = new EntityClassGroup(
 +            (entityClass) -> {
@@ -849,7 +849,7 @@ index ac6e5e3309affc830d4db07fd9b8d809c3085033..b7fcbef8d38c9406a891d64f8016bc16
      @Override
      public NBTTagCompound i(BlockPosition blockposition) {
 diff --git a/src/main/java/net/minecraft/server/Entity.java b/src/main/java/net/minecraft/server/Entity.java
-index 798ce0029c980d340d74dff53d702ef3cd00e33e..eec6dbda1b5a34122a75f11dfa82506f9763779c 100644
+index e0381ed6945f734f8802d07b8cbd6b27852db449..220d5273543ea0b143cf9c894c89cabea25c29d6 100644
 --- a/src/main/java/net/minecraft/server/Entity.java
 +++ b/src/main/java/net/minecraft/server/Entity.java
 @@ -73,7 +73,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
@@ -862,7 +862,7 @@ index 798ce0029c980d340d74dff53d702ef3cd00e33e..eec6dbda1b5a34122a75f11dfa82506f
      // Paper end
  
 diff --git a/src/main/java/net/minecraft/server/EntitySlice.java b/src/main/java/net/minecraft/server/EntitySlice.java
-index 1250c3cbe915815939627701c153ba6254fc05f0..e0cbcc0a15f8089c29957badc20b0a786831c64b 100644
+index 1250c3cbe915815939627701c153ba6254fc05f0..06a51ca13d484dd319aa96364b2f1b533b184c36 100644
 --- a/src/main/java/net/minecraft/server/EntitySlice.java
 +++ b/src/main/java/net/minecraft/server/EntitySlice.java
 @@ -14,18 +14,35 @@ import java.util.Map.Entry;
@@ -880,10 +880,11 @@ index 1250c3cbe915815939627701c153ba6254fc05f0..e0cbcc0a15f8089c29957badc20b0a78
  
      private final Map<Class<?>, List<T>> a = Maps.newHashMap();
      private final Class<T> b;
-     private final List<T> c = Lists.newArrayList();
- 
-+    private Reference2ReferenceOpenHashMap<EntityClassGroup, ReferenceLinkedOpenHashSet<T>> entitiesByGroup; // Yatopia
+-    private final List<T> c = Lists.newArrayList();
++    private final List<T> c = new net.yatopia.server.list.GlueList<>(); // Yatopia
 +
++    private Reference2ReferenceOpenHashMap<EntityClassGroup, ReferenceLinkedOpenHashSet<T>> entitiesByGroup; // Yatopia
+ 
      public EntitySlice(Class<T> oclass) {
          this.b = oclass;
          this.a.put(oclass, this.c);
@@ -925,7 +926,7 @@ index 1250c3cbe915815939627701c153ba6254fc05f0..e0cbcc0a15f8089c29957badc20b0a78
 -                return (List) stream.filter(oclass1::isInstance).collect(Collectors.toList());
 +            List<S> list = (List<S>) this.a.computeIfAbsent(oclass, (oclass1) -> { // Yatopia - decompile fix
 +                // Yatopia start - how about we nuke stream?
-+                List<T> ret = Lists.newArrayList();
++                List<T> ret = new net.yatopia.server.list.GlueList<>();
 +                for (T t : c) {
 +                    if (oclass1.isInstance(t)) {
 +                        ret.add(t);
@@ -1028,10 +1029,10 @@ index 882b82d8952d34f6e3c639404d1a1521dedf1bb0..ccf1416000354b78ccef78b072062ce0
  
      default EntityHuman findNearbyPlayer(Entity entity, double d0, @Nullable Predicate<Entity> predicate) { return this.findNearbyPlayer(entity.locX(), entity.locY(), entity.locZ(), d0, predicate); } // Paper
 diff --git a/src/main/java/net/minecraft/server/PlayerChunkMap.java b/src/main/java/net/minecraft/server/PlayerChunkMap.java
-index c3eb85c71539ebdb1b6c9a386e4de9ba717f030e..9f32a26fdbfaf024cfe5c0996c2253f2dd581d5e 100644
+index 1f7a8694f69345288c53df0f3a1845f2721f6c7b..2c5c224e90f85d0c5a99daf4fcf5a49d5abcc299 100644
 --- a/src/main/java/net/minecraft/server/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/PlayerChunkMap.java
-@@ -1343,11 +1343,11 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -1334,11 +1334,11 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
                      chunk.setLoaded(true);
                      this.world.a(chunk.getTileEntities().values());
                      List<Entity> list = null;
@@ -1045,17 +1046,8 @@ index c3eb85c71539ebdb1b6c9a386e4de9ba717f030e..9f32a26fdbfaf024cfe5c0996c2253f2
                          Iterator iterator = entityslice.iterator();
  
                          while (iterator.hasNext()) {
-@@ -1640,7 +1640,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
-             // CraftBukkit - decompile error
-             csvwriter.a(chunkcoordintpair.x, chunkcoordintpair.z, playerchunk.getTicketLevel(), optional.isPresent(), optional.map(IChunkAccess::getChunkStatus).orElse(null), optional1.map(Chunk::getState).orElse(null), a(playerchunk.c()), a(playerchunk.a()), a(playerchunk.b()), this.chunkDistanceManager.c(entry.getLongKey()), !this.isOutsideOfRange(chunkcoordintpair), optional1.map((chunk) -> {
-                 int sum = 0;
--                for (List<Entity> entities : chunk.getEntitySlices()) {
-+                for (EntitySlice<Entity> entities : chunk.getAsSlices()) { // Yatopia - this was caused due to md_5 being stupid
-                     int size = entities.size();
-                     sum += size;
-                 }
 diff --git a/src/main/java/net/minecraft/server/VoxelShapes.java b/src/main/java/net/minecraft/server/VoxelShapes.java
-index f9a1f5e92a7559a50dfb72d7455a8fc03dbad25f..3094ce00b3fa5b266f5d0ad0875f160e80c62e18 100644
+index 4bdadffee07c54f6f538ba09db72d562d05cb337..eb358d4453fce1de7f15f38b32e594fa63e4deb5 100644
 --- a/src/main/java/net/minecraft/server/VoxelShapes.java
 +++ b/src/main/java/net/minecraft/server/VoxelShapes.java
 @@ -40,7 +40,9 @@ public final class VoxelShapes {
@@ -1069,10 +1061,10 @@ index f9a1f5e92a7559a50dfb72d7455a8fc03dbad25f..3094ce00b3fa5b266f5d0ad0875f160e
          } else if (shape instanceof VoxelShapeArray) {
              VoxelShapeArray shapeCasted = (VoxelShapeArray)shape;
 diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
-index e86d439a7a340e31071c5b2f6531abd1537db06d..00930eeea75758645b173f4bc2fbf635e1d426ba 100644
+index 274b7e04ff09e459cd63040b1c29e3d197aafe72..97db7999968bceb2f069eb449c64e7da874d787f 100644
 --- a/src/main/java/net/minecraft/server/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/WorldServer.java
-@@ -649,8 +649,14 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -656,8 +656,14 @@ public class WorldServer extends World implements GeneratorAccessSeed {
      }
  
      public final void getCollisions(@Nullable Entity entity, AxisAlignedBB axisalignedbb, List<AxisAlignedBB> list, boolean loadChunks) {
@@ -1087,7 +1079,7 @@ index e86d439a7a340e31071c5b2f6531abd1537db06d..00930eeea75758645b173f4bc2fbf635
      }
  
      @Override
-@@ -1743,12 +1749,12 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -1730,12 +1736,12 @@ public class WorldServer extends World implements GeneratorAccessSeed {
          }
          // Spigot End
          this.tileEntityListUnload.addAll(chunk.getTileEntities().values());

@@ -46,7 +46,7 @@ index 050e0d7ec29755590dde2f35090b96f6f2457952..72d7a017f2aa7f2fde3b5de437e7fd2e
          this.setAllowFlight(dedicatedserverproperties.allowFlight);
          this.setResourcePack(dedicatedserverproperties.resourcePack, this.aZ());
 diff --git a/src/main/java/net/minecraft/server/EntityLiving.java b/src/main/java/net/minecraft/server/EntityLiving.java
-index 7083b379568fd101bec19469b60daf062bc4d137..0a7f88de5c5c307ed01c2f4a43336571f118736d 100644
+index 154cb30369fdda685dcb82051a5244dba4d5b912..2247b200cd3f2246c35eb5312153122fa033d05e 100644
 --- a/src/main/java/net/minecraft/server/EntityLiving.java
 +++ b/src/main/java/net/minecraft/server/EntityLiving.java
 @@ -267,6 +267,7 @@ public abstract class EntityLiving extends Entity {
@@ -66,10 +66,10 @@ index 7083b379568fd101bec19469b60daf062bc4d137..0a7f88de5c5c307ed01c2f4a43336571
          if (this.isFireProof() || this.world.isClientSide) {
              this.extinguish();
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index c944b407df03fca1153978d0763313d44d6461c8..66d0cf7d4b0bbffbd5eff64bfc46806c6f834c21 100644
+index 6920d994f54e150a1fc63bc7fc70e71d745faf62..aeb68a66de042d0e4789f095bde072a2f9eff649 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -189,7 +189,7 @@ public abstract class PlayerList {
+@@ -188,7 +188,7 @@ public abstract class PlayerList {
          // Spigot - view distance
          playerconnection.sendPacket(new PacketPlayOutLogin(entityplayer.getId(), entityplayer.playerInteractManager.getGameMode(), entityplayer.playerInteractManager.c(), BiomeManager.a(worldserver1.getSeed()), worlddata.isHardcore(), this.server.F(), this.s, worldserver1.getDimensionManager(), worldserver1.getDimensionKey(), this.getMaxPlayers(), worldserver1.getChunkProvider().playerChunkMap.getLoadViewDistance(), flag1, !flag, worldserver1.isDebugWorld(), worldserver1.isFlatWorld())); // Paper - no-tick view distance
          entityplayer.getBukkitEntity().sendSupportedChannels(); // CraftBukkit
@@ -278,10 +278,10 @@ index 0000000000000000000000000000000000000000..c4dd521d18dd60ec07bdcf0d367b5135
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 4bae0e82bc25b576a23b5f05af7c3ad944a54bcf..78d7fc805a1aeb0d31e51a5aa68e92d9ffd7ba73 100644
+index 0645185e2d73f7001a07a9f5c8461da71b1327d5..efbfcc5038a1019725eba46e5379a86e78617fb8 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -845,6 +845,7 @@ public final class CraftServer implements Server {
+@@ -859,6 +859,7 @@ public final class CraftServer implements Server {
          com.tuinity.tuinity.config.TuinityConfig.init((File) console.options.valueOf("tuinity-settings")); // Tuinity - Server Config
          net.pl3x.purpur.PurpurConfig.init((File) console.options.valueOf("purpur-settings")); // Purpur
          de.minebench.origami.OrigamiConfig.init((File) console.options.valueOf("origami-settings")); // Origami
@@ -289,7 +289,7 @@ index 4bae0e82bc25b576a23b5f05af7c3ad944a54bcf..78d7fc805a1aeb0d31e51a5aa68e92d9
          for (WorldServer world : console.getWorlds()) {
              world.worldDataServer.setDifficulty(config.difficulty);
              world.setSpawnFlags(config.spawnMonsters, config.spawnAnimals);
-@@ -2274,6 +2275,13 @@ public final class CraftServer implements Server {
+@@ -2288,6 +2289,13 @@ public final class CraftServer implements Server {
          }
          // Origami end
  
@@ -304,7 +304,7 @@ index 4bae0e82bc25b576a23b5f05af7c3ad944a54bcf..78d7fc805a1aeb0d31e51a5aa68e92d9
          public void restart() {
              org.spigotmc.RestartCommand.restart();
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index b3651d69720cd40593d0febb58380203972ca87b..e1fdb891ca612cd360983ce121b01faab3f50d68 100644
+index 2e0dcd78a1ec5d817c44831c279c47dc98902681..a14ae29b1c248b208adfc9eb22048ba76b09502f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -162,6 +162,14 @@ public class Main {

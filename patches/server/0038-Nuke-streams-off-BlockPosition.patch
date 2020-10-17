@@ -1,0 +1,47 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ivan Pekov <ivan@mrivanplays.com>
+Date: Tue, 1 Sep 2020 19:11:50 +0300
+Subject: [PATCH] Nuke streams off BlockPosition
+
+
+diff --git a/src/main/java/net/minecraft/server/BlockBase.java b/src/main/java/net/minecraft/server/BlockBase.java
+index 344b23dfe54df6dee5e2d6bf1bbbe4a9d1da87c4..9f1acd52c7d16dfc00cf2d361295f72f764bc7ac 100644
+--- a/src/main/java/net/minecraft/server/BlockBase.java
++++ b/src/main/java/net/minecraft/server/BlockBase.java
+@@ -637,6 +637,7 @@ public abstract class BlockBase {
+             return this.getBlock().getInventory(this.p(), world, blockposition);
+         }
+ 
++        public final boolean hasTag(Tag<Block> tag) { return a(tag); } // Yatopia - OBFHELPER
+         public boolean a(Tag<Block> tag) {
+             return this.getBlock().a(tag);
+         }
+@@ -645,6 +646,7 @@ public abstract class BlockBase {
+             return this.getBlock().a(tag) && predicate.test(this);
+         }
+ 
++        public final boolean isBlock(Block block) { return a(block); } // Yatopia - OBFHELPER
+         public boolean a(Block block) {
+             return this.getBlock().a(block);
+         }
+diff --git a/src/main/java/net/minecraft/server/BlockPosition.java b/src/main/java/net/minecraft/server/BlockPosition.java
+index dbe6f7d555e8c851faba5cafee8831c516256c09..3bd6d37a93b741043851c6a24ffe61f517774546 100644
+--- a/src/main/java/net/minecraft/server/BlockPosition.java
++++ b/src/main/java/net/minecraft/server/BlockPosition.java
+@@ -318,7 +318,15 @@ public class BlockPosition extends BaseBlockPosition {
+     }
+ 
+     public static Optional<BlockPosition> a(BlockPosition blockposition, int i, int j, Predicate<BlockPosition> predicate) {
+-        return b(blockposition, i, j, i).filter(predicate).findFirst();
++        // Yatopia start - avoid using stream
++        // return b(blockposition, i, j, i).filter(predicate).findFirst();
++        for (BlockPosition pos : a(blockposition, i, j, i)) {
++            if (predicate.test(pos)) {
++                return Optional.of(pos);
++            }
++        }
++        return Optional.empty();
++        // Yatopia end
+     }
+ 
+     public static Stream<BlockPosition> b(BlockPosition blockposition, int i, int j, int k) {

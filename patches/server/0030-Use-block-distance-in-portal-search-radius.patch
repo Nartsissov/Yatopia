@@ -12,10 +12,10 @@ This changes it so that the portal list is filtered to only include portals with
 Ported to Yatopia and added per world config option by MrIvanPlays <ivan@mrivanplays.com>
 
 diff --git a/src/main/java/de/minebench/origami/OrigamiConfig.java b/src/main/java/de/minebench/origami/OrigamiConfig.java
-index 1d98bfdee95fb1052fcd9f141a2ab82ba9dcf2f9..9549b857020bb749c039420950684c74c1108945 100644
+index 4230872de3551393a35c567d07a570dd07976fb8..febd0a7413382e059b681a43cc9ac42ab5c14128 100644
 --- a/src/main/java/de/minebench/origami/OrigamiConfig.java
 +++ b/src/main/java/de/minebench/origami/OrigamiConfig.java
-@@ -165,6 +165,11 @@ public final class OrigamiConfig {
+@@ -172,6 +172,11 @@ public final class OrigamiConfig {
                              && pillagerCollisions && ironGolemCollisions && miscCollisions && itemCollisions
                              && waterCreatureCollisions && waterAmbientCollisions;
          }
@@ -28,14 +28,13 @@ index 1d98bfdee95fb1052fcd9f141a2ab82ba9dcf2f9..9549b857020bb749c039420950684c74
      }
  
 diff --git a/src/main/java/net/minecraft/server/PortalTravelAgent.java b/src/main/java/net/minecraft/server/PortalTravelAgent.java
-index 97fadc4a1fa7859a07dc5d6c122beb66ca01c97f..b4e1487489228b37af23f35033cf0892c7afce5f 100644
+index f6ffefd7e356c9c68cb6591cab55de9363442faf..eddf3dff9a00bf3c7318745e52befd4c04fa2af7 100644
 --- a/src/main/java/net/minecraft/server/PortalTravelAgent.java
 +++ b/src/main/java/net/minecraft/server/PortalTravelAgent.java
-@@ -29,6 +29,15 @@ public class PortalTravelAgent {
-             return villageplacerecord.f().getY();
-         });
+@@ -30,6 +30,13 @@ public class PortalTravelAgent {
+         }); // Yatopia
+         // Yatopia start
          java.util.List<VillagePlaceRecord> list = villageplace.b(type -> type == VillagePlaceType.v, blockposition, i, VillagePlace.Occupancy.ANY).collect(java.util.stream.Collectors.toList());
-+        // Yatopia start - fix portal bug
 +        if (world.origamiConfig.useBlockDistanceInPortalSearchRadius) {
 +            list.removeIf(villagePlaceRecord -> {
 +                BlockPosition portalPosition = villagePlaceRecord.getPosition();
@@ -43,7 +42,6 @@ index 97fadc4a1fa7859a07dc5d6c122beb66ca01c97f..b4e1487489228b37af23f35033cf0892
 +                        || Math.abs(portalPosition.getZ() - blockposition.getZ()) > i;
 +            });
 +        }
-+        // Yatopia end
          Optional<VillagePlaceRecord> optional = Optional.empty();
          if (!list.isEmpty()) {
              list.sort(comparator);
