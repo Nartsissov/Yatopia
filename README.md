@@ -10,14 +10,13 @@
 </div>
 
 ## So what is Yatopia?
-Yatopia combines the best patches from many Paper forks and optimization mods, as well as many unique optimizations. We borrow some of our patches from the following repos:
+Yatopia combines the best patches from many [Paper](https://github.com/PaperMC/Paper) forks and optimization mods, as well as many unique optimizations. We borrow some of our patches from the following repos:
 
 * [Akarin](https://github.com/Akarin-project/Akarin)
 * [EMC](https://github.com/starlis/empirecraft)
 * [Lithium](https://github.com/jellysquid3/lithium-fabric)
 * [Origami](https://github.com/Minebench/Origami)
 * [Purpur](https://github.com/pl3xgaming/Purpur)
-* [Tic-TACS](https://github.com/gegy1000/tic-tacs/)
 
 
 ## Try it out 
@@ -44,11 +43,11 @@ You can find a full explanation of the Yatopia configuration file on the [wiki](
 Run the following commands in the root directory:
 
 ```shell
-./yatopia in
+./yatopia init
 ./yatopia full
 ```
 
-If you are repatching you need to delete `Yatopa-API` and `Yatopia-Server` folders.
+If you are repatching you need to delete `Yatopia-API` and `Yatopia-Server` folders.
 
 ## Using Yatopia-API
 
